@@ -7,28 +7,40 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.orgs2.R
+import com.example.orgs2.databinding.ProdutoItemBinding
 import com.example.orgs2.model.Produto
+import java.math.BigDecimal
+import java.text.NumberFormat
+import java.util.Locale
 
 class ListaProdutosAdapter(
     private val context: Context,
     produtos: List<Produto>
 ) : RecyclerView.Adapter<ListaProdutosAdapter.ViewHolder>() {
     private val produtos = produtos.toMutableList()
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
+    class ViewHolder(private val binding: ProdutoItemBinding) :
+        RecyclerView.ViewHolder(binding.root){
         fun vincula(produto: Produto) {
-            val nome = itemView.findViewById<TextView>(R.id.none)
+            val nome = binding.none
             nome.text = produto.nome
-            val descricao = itemView.findViewById<TextView>(R.id.descricao)
+            val descricao = binding.descricao
             descricao.text = produto.descricao
-            val valor = itemView.findViewById<TextView>(R.id.valor)
-            valor.text = produto.valor.toPlainString()
+            val valor = binding.valor
+            val valorEmMoeda: String = formataParaReal(produto.valor)
+            valor.text = valorEmMoeda
+        }
+
+        private fun formataParaReal(valor: BigDecimal): String {
+            val formatador: NumberFormat = NumberFormat
+                .getCurrencyInstance(Locale("pt", "br"))
+            return formatador.format(valor)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val infaldor = LayoutInflater.from(context)
-        val view = infaldor.inflate(R.layout.produto_item, parent, false)
-        return ViewHolder(view)
+        val binding = ProdutoItemBinding.inflate(infaldor, parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

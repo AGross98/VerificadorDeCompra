@@ -26,7 +26,7 @@
         android:clickable="true"
         android:focusable="true"
         android:layout_margin="16dp"
-        android:src="@drawable/baseline_add"
+        android:src="@drawable/ic_action_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
